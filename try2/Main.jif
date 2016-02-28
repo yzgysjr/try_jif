@@ -1,0 +1,41 @@
+import java.io.PrintStream;
+import jif.runtime.Runtime;
+
+class Main {
+	public static final void main {p <- *}
+		(principal{} p, String args[]) : {}
+		throws SecurityException, IllegalArgumentException
+		where caller(p)
+	{
+		PrintStream[{}] outA = null;
+		try {
+			Runtime[p] runtime = Runtime[p].getRuntime();
+			outA = runtime == null ? null : runtime.stdout(new label {});
+		}
+		catch (SecurityException e) {
+		}
+
+		final label lp = new label {p : };
+
+		PrintStream[{}] out = declassify(outA, {});
+
+		if (out == null)
+			throw new IllegalArgumentException("Null output");
+
+		out.println("cxy");
+		out.println(PrincipalUtil.toString(p)); // print caller's name
+		
+		LinkedList[lp] list = new LinkedList[lp]();
+		for (int i = 1; i <= 100; ++i) {
+			JifInteger a = new JifInteger(i);
+			list.add(a);
+			out.println(declassify(list.size(), {}));
+		}
+		for (int i = 100; i >= 1; --i) {
+			JifInteger a = new JifInteger(i);
+			list.remove(a);
+			out.println(declassify(list.size(), {}));
+		}
+	}
+}
+
