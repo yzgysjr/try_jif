@@ -1,0 +1,30 @@
+import java.io.PrintStream;
+import jif.runtime.Runtime;
+
+class Main authority (Alice, Bob) {
+	public static final void
+		main {Alice <- * meet Bob <- * meet p <- *}
+			(principal{} p, String args[]) :
+			{Alice <- * meet Bob <- *}
+		throws SecurityException, IllegalArgumentException
+		where authority (Alice, Bob), caller(p)
+	{
+		PrintStream[{}] outA = null;
+		try {
+			Runtime[p] runtime = Runtime[p].getRuntime();
+			outA = runtime == null ? null : runtime.stdout(new label {});
+		}
+		catch (SecurityException e) {
+		}
+
+		PrintStream[{}] outB = endorse(outA, {p -> *} to {p -> *; Alice <- * meet Bob <- *});
+		PrintStream[{}] out = declassify(outB, {Alice <- * meet Bob <- *});
+
+		if (out == null)
+			throw new IllegalArgumentException("Null output");
+
+		out.println("cxy");
+		out.println(PrincipalUtil.toString(p)); // print caller's name
+	}
+}
+
