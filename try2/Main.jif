@@ -7,17 +7,15 @@ class Main {
 		throws SecurityException, IllegalArgumentException
 		where caller(p)
 	{
-		PrintStream[{}] outA = null;
+		Runtime runtime = Runtime[p].getRuntime();
+		PrintStream out = null;
 		try {
-			Runtime[p] runtime = Runtime[p].getRuntime();
-			outA = runtime == null ? null : runtime.stdout(new label {});
+			out = runtime.out();
+			out.println("Hello, world!");
 		}
-		catch (SecurityException e) {
+		catch (NullPointerException ignored) {
+			
 		}
-
-		final label lp = new label {p : };
-
-		PrintStream[{}] out = declassify(outA, {});
 
 		if (out == null)
 			throw new IllegalArgumentException("Null output");
@@ -25,7 +23,7 @@ class Main {
 		out.println("cxy");
 		out.println(PrincipalUtil.toString(p)); // print caller's name
 		
-		LinkedList[lp] list = new LinkedList[lp]();
+		LinkedList list = new LinkedList();
 		for (int i = 1; i <= 100; ++i) {
 			JifInteger a = new JifInteger(i);
 			list.add(a);
