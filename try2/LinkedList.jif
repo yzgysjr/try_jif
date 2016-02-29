@@ -14,8 +14,8 @@ public class LinkedList [label L] {
 	}
 	
 	public void add{L}(JifObject[L]{L} o) {
-		Entry[L]{L} e = new Entry[L](o);
-		Entry[L]{L} t = tail;
+		Entry[L] e = new Entry[L](o);
+		Entry[L] t = tail;
 		if (t == null) {
 			head = tail = e;
 			return;
@@ -26,9 +26,9 @@ public class LinkedList [label L] {
 	}
 
 	public boolean{L} remove{L}(JifObject[L]{L} o) {
-		Entry[L]{L} h = head;
-		Entry[L]{L} t = tail;
-		Entry[L]{L} e = h;
+		Entry[L] h = head;
+		Entry[L] t = tail;
+		Entry[L] e = h;
 		for ( ; ; e = e.next)
 			if (e == null)
 				return false;
@@ -36,8 +36,8 @@ public class LinkedList [label L] {
 				break;
 			else if (e.data != null && o != null && o.equals(e.data))
 				break;
-		Entry[L]{L} l = e.prev;
-		Entry[L]{L} r = e.next;
+		Entry[L] l = e.prev;
+		Entry[L] r = e.next;
 		if (l != null)
 			l.next = r;
 		if (r != null)
