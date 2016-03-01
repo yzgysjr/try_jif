@@ -1,0 +1,60 @@
+import java.io.PrintStream;
+import jif.runtime.Runtime;
+
+class Main {
+	public static final void main {p <- *}
+		(principal{} p, String args[]) : {}
+		throws SecurityException, IllegalArgumentException
+		where caller(p)
+	{
+		PrintStream[{}] outA = null;
+		try {
+			Runtime[p] runtime = Runtime[p].getRuntime();
+			outA = runtime == null ? null : runtime.stdout(new label {});
+		}
+		catch (SecurityException e) {
+		}
+
+		final label lp = new label {p : };
+
+		PrintStream[{}] out = declassify(outA, {});
+
+		if (out == null)
+			throw new IllegalArgumentException("Null output");
+
+		out.println("cxy");
+		out.println(PrincipalUtil.toString(p)); // print caller's name
+		
+		Database db = new Database();
+		User user = new User();
+		
+		for (int i = 0; i < 4; ++i) {
+			String name = user.getUserName(i);
+			String pwd = user.getPwd(i);
+			db.addUser(name, pwd);
+		}
+		
+		for (int i = 3; i >= 0; --i) {
+			String name = user.getUserName(i);
+			String pwd = user.getPwd(i);
+			boolean result = db.login(name, pwd);
+			out.println(name + " " + pwd + " " + result);
+		}
+		
+		String fakeName[] = {"zhihao bai", "junwen bai", "chu wei"};
+		String fakePwd[] = {"jian weng", "fan wang", "wenhao li"};
+		for (int i = 0; i < 3; ++i) {
+			String name = null, pwd = null;
+			try {
+				name = fakeName[i];
+				pwd = fakePwd[i];
+			}
+			catch (ArrayIndexOutOfBoundsException ignored) {
+			
+			}
+			boolean result = db.login(name, pwd);
+			out.println(name + " " + pwd + " " + result);
+		}
+	}
+}
+

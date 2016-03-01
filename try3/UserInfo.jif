@@ -1,0 +1,44 @@
+
+public class UserInfo[label L] implements JifObject[L] {
+	public String{L} x;
+	public String{L} y;
+
+	public UserInfo(String{L;this} x, String{L;this} y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	public String{L} toString() {
+		return "(" + x + ", " + y + ")";
+	}
+
+	public int{L} hashCode() {
+		String thisX = this.x;
+		String thisY = this.y;
+
+		int xHashCode = (thisX == null) ? (0) : (thisX.hashCode());
+		int yHashCode = (thisY == null) ? (0) : (thisY.hashCode());
+		return (13 * xHashCode) ^ (-23 * yHashCode);
+	}
+
+	public boolean{lbl; *lbl; L; o} equals(label lbl, IDComparable[lbl] o) {
+		if (o == null || !(o instanceof UserInfo[lbl])) {
+			return false;
+		}
+
+		UserInfo[lbl] that = (UserInfo[lbl])o;
+
+		String thisX = this.x;
+		String thatX = that.x;
+		String thisY = this.y;
+		String thatY = that.y;
+
+		return thisX != null && thisY != null && thisX.equals(thatX) && thisY == thatY;
+	}
+
+	public boolean{L; o} equals(IDComparable[L] o) {
+		return equals(L, o);
+	}
+
+}
+

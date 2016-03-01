@@ -1,0 +1,35 @@
+
+public class User[principal root, principal user] authority(user) {
+
+	private final String{user <- *; user -> *}[]{this} names = {"junru shao", "xinyun chen", "yzgysjr", "Jungyhuk"};
+	private final String{user <- *; user -> *}[]{this} pwds = {"941023", "950803", "160104", "160224"};
+
+	public User() {
+	}
+
+	public String{user <- *} getUserName{user <- *}(int{user <- *; user -> *} i) where authority(user) {
+		String{user <- *; user -> *} name = null;
+		try {
+			name = names[i];
+		}
+		catch (NullPointerException e) {
+		}
+		catch (ArrayIndexOutOfBoundsException e) {
+		}
+		return declassify(name, {user <- *});
+	}
+
+	public String{user <- *} getPwd{user <- *}(int{user <- *; user -> *} i) where authority(user) {
+		String{user <- *; user -> *} pwd = null;
+		try {
+			pwd = pwds[i];
+		}
+		catch (NullPointerException e) {
+		}
+		catch (ArrayIndexOutOfBoundsException e) {
+		}
+		return declassify(pwd, {user <- *});
+	}
+
+}
+

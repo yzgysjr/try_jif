@@ -1,0 +1,83 @@
+
+public class LinkedList [label L] {
+	private Entry[L]{L} head;
+	private Entry[L]{L} tail;
+
+	public LinkedList() {
+		head = tail = null;	
+	}
+
+	public int{L} size() {
+		int s = 0;
+		for (Entry[L] e = head; e != null; e = e.next, ++s);
+		return s;
+	}
+
+	public void add{L}(JifObject[L]{L} o) {
+		Entry[L] e = new Entry[L](o);
+		Entry[L] t = tail;
+		if (t == null) {
+			head = tail = e;
+			return;
+		}
+		t.next = e;
+		e.prev = t;
+		tail = e;
+	}
+
+	public boolean{L} remove{L}(JifObject[L]{L} o) {
+		Entry[L] h = head;
+		Entry[L] t = tail;
+		Entry[L] e = h;
+		for ( ; ; e = e.next)
+			if (e == null)
+				return false;
+			else if (e.data == null && o == null)
+				break;
+			else if (e.data != null && o != null && o.equals(e.data))
+				break;
+		Entry[L] l = e.prev;
+		Entry[L] r = e.next;
+		if (l != null)
+			l.next = r;
+		if (r != null)
+			r.next = l;
+		if (e == head)
+			head = e.next;
+		if (e == tail)
+			tail = e.prev;
+		return true;
+	}
+
+	public boolean{o; L} exists(JifObject[L]{L} o) {
+		try {
+			for (Entry[L] e = head; e != null; e = e.next)
+				if (o == null && e.data == null)
+					return true;
+				else if (o != null && e != null && o.equals(e.data))
+					return true;
+		}
+		catch (NullPointerException ignored) {
+		}
+		return false;
+	}
+}
+
+class Entry [label L] {
+	Entry[L]{L} prev;
+	Entry[L]{L} next;
+	JifObject[L]{L} data;
+
+	public Entry() {
+		prev = null;
+		next = null;
+		data = null;
+	}
+
+	public Entry{L}(JifObject[L]{L} o) {
+		prev = null;
+		next = null;
+		data = o;
+	}
+}
+

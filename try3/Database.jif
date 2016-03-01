@@ -1,0 +1,34 @@
+
+public class Database[principal root, principal user] authority(root) {
+
+	private final LinkedList[{root <- *}]{this} list;
+
+	public Database() {
+		list = new LinkedList();
+	}
+
+	void addUser{root <- * meet user <- *} (String{user <- *} _name, String{user <- *} _pwd)
+		where authority(root)
+	{
+		String{root <- *} name = endorse(_name, {root <- * meet user <- * });
+		String{root <- *} pwd = endorse(_pwd, {root <- * meet user <- *});
+		LinkedList list = this.list;
+		if (list != null)
+			list.add(new UserInfo(name, pwd));
+	}
+
+	boolean{root <- * } login{root <- * meet user <- *}
+		(String{user <- *} _name, String{user <- *} _pwd)
+		where authority(root)
+	{
+		String name = endorse(_name, {root <- * meet user <- * });
+		String pwd = endorse(_pwd, {root <- * meet user <- *});
+		LinkedList list = this.list;
+		if (list == null)
+			return false;
+		UserInfo info = new UserInfo(name, pwd);
+		boolean{root <- *} exist = list.exists(info);
+		return exist;
+	}
+}
+
