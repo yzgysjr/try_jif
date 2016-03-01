@@ -1,11 +1,52 @@
 import java.io.PrintStream;
 import jif.runtime.Runtime;
 
-class Main {
-	public static final void main {p <- *}
+class Runner[principal root, principal user] authority (root, user) {
+
+	public void run{root <- * meet user <- *}(PrintStream[{}]{root <- * meet user <- *} out) 
+		where authority (root, user) {
+		if (out == null)
+			return;
+
+		Database[root, user] db = new Database();
+		User[root, user] alice = new User();
+		
+		for (int i = 0; i < 4; ++i) {
+			String{user <- *} name = alice.getUserName(i);
+			String{user <- *} pwd = alice.getPwd(i);
+			out.println(name + " : " + pwd);
+			db.addUser(name, pwd);
+		}
+		
+		for (int i = 3; i >= 0; --i) {
+			String name = alice.getUserName(i);
+			String pwd = alice.getPwd(i);
+			boolean result = db.login(name, pwd);
+			out.println(name + " : " + pwd + " : " + result);
+		}
+
+		String fakeName[] = {"zhihao bai", "junwen bai", "chu wei"};
+		String fakePwd[] = {"jian weng", "fan wang", "wenhao li"};
+		for (int i = 0; i < 3; ++i) {
+			String name = null, pwd = null;
+			try {
+				name = endorse(fakeName[i], {user <- *});
+				pwd = endorse(fakePwd[i], {user <- *});
+			}
+			catch (ArrayIndexOutOfBoundsException ignored) {
+			
+			}
+			boolean result = db.login(name, pwd);
+			out.println(name + " : " + pwd + " : " + result);
+		}
+	}
+}
+
+public class Main authority(root, Alice) {
+	public static final void main {p <- * meet root <- * meet Alice <- *}
 		(principal{} p, String args[]) : {}
 		throws SecurityException, IllegalArgumentException
-		where caller(p)
+		where authority (root, Alice), caller(p)
 	{
 		PrintStream[{}] outA = null;
 		try {
@@ -17,44 +58,16 @@ class Main {
 
 		final label lp = new label {p : };
 
-		PrintStream[{}] out = declassify(outA, {});
+		PrintStream[{}] outB = endorse(outA, {p -> *} to {p -> *; root <- * meet Alice <- * meet p <- *});
+		PrintStream[{}] out = declassify(outB, {root <- * meet Alice <- *});
 
 		if (out == null)
 			throw new IllegalArgumentException("Null output");
 
 		out.println("cxy");
 		out.println(PrincipalUtil.toString(p)); // print caller's name
-		
-		Database db = new Database();
-		User user = new User();
-		
-		for (int i = 0; i < 4; ++i) {
-			String name = user.getUserName(i);
-			String pwd = user.getPwd(i);
-			db.addUser(name, pwd);
-		}
-		
-		for (int i = 3; i >= 0; --i) {
-			String name = user.getUserName(i);
-			String pwd = user.getPwd(i);
-			boolean result = db.login(name, pwd);
-			out.println(name + " " + pwd + " " + result);
-		}
-		
-		String fakeName[] = {"zhihao bai", "junwen bai", "chu wei"};
-		String fakePwd[] = {"jian weng", "fan wang", "wenhao li"};
-		for (int i = 0; i < 3; ++i) {
-			String name = null, pwd = null;
-			try {
-				name = fakeName[i];
-				pwd = fakePwd[i];
-			}
-			catch (ArrayIndexOutOfBoundsException ignored) {
-			
-			}
-			boolean result = db.login(name, pwd);
-			out.println(name + " " + pwd + " " + result);
-		}
+
+		new Runner[root, Alice]().run(out);
 	}
 }
 

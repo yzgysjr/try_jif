@@ -1,6 +1,6 @@
-all: list db main user
+all: main
 	jif Main -classpath "$(JIF)/tests/:."
-main:
+main: db user
 	jifc -e -report debug=1 Main.jif -classpath "$(JIF)/tests/:."
 list:
 	jifc -e -report debug=1 LinkedList.jif -classpath "$(JIF)/tests/:."
