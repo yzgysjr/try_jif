@@ -1,0 +1,58 @@
+<project name = "login" default="build" basedir=".">
+
+	<property environment="env"/>
+	<property name="jifc" location="${env.JIF}/bin/jifc"/>
+
+	<macrodef name="jifc">
+		<attribute
+			name="destdir"
+			description="The output directory."/>
+		<element name="extra-args" implicit="true"/>
+		<sequential>
+			<apply
+				executable="bash"
+				parallel="true"
+				failonerror="true"
+				dest="@{destdir}"
+				relative="false"
+				skipemptyfilesets="true"
+				vmlauncher="false">
+				<arg value="${jifc}"/>
+				<arg value="-d"/>
+				<arg value="@{destdir}"/>
+				<extra-args/>
+				<srcfile/>
+				<globmapper from="*.jif" to="*.class"/>
+			</apply>
+		</sequential>
+	</macrodef>
+
+	<target name="clean">
+		<delete dir="build"/>
+	</target>
+
+	<target
+		name="build"
+		description="Build the login example"
+		depends="ttp">
+		<jifc destdir="build/">
+			<arg value="-sourcepath" />
+			<arg value="src/login/" />
+			<arg value="-cp" />
+			<arg value="build/:." />
+			<fileset dir="src/login/" includes="*.jif" />
+		</jifc>
+	</target>
+
+	<target
+		name="ttp"
+		description="Build the principal of trusted third party">
+		<jifc destdir="build/">
+			<arg value="-sourcepath" />
+			<arg value="src/principals/" />
+			<fileset dir="src/principals/" includes="*.jif" />
+		</jifc>
+	</target>
+
+</project>
+
