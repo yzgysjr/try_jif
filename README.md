@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is an example of programming in Jif [].
+This is an example of programming in Jif.
 In this example, several users are attempting to verify their username and password with a special principal root.
 There is a special trusted third party, who will automatically do something like zero knowledge proof
 to validate their requests.
