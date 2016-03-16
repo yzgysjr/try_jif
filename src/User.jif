@@ -1,0 +1,22 @@
+
+public class User {
+
+	public final Principal{} p;
+	private final String{} username;
+	private final String{} password;
+
+	public User(Principal{} p, String{} username, String{} password) {
+		this.p = p;
+		this.username = username;
+		this.password = password;
+	}
+	
+	public String{} getUsername() {
+		return username;
+	}
+
+	public String{} getPassword() {
+		return username;
+	}
+}
+

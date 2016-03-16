@@ -1,0 +1,11 @@
+
+public class UserPrincipal extends AbstractPrincipal {
+	public UserPrincipal(String{this} name) {
+		super(name);
+	}
+
+	public UserPrincipal(String{this} name, Principal{this} superior) {
+		super(name, superior);
+	}
+}
+

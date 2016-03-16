@@ -1,0 +1,55 @@
+
+import java.io.PrintStream;
+import jif.util.ArrayList;
+
+class RunExample[principal TrustedThirdParty] authority (TrustedThirdParty) {
+
+	public void run{TrustedThirdParty <- *}(PrintStream[{}]{TrustedThirdParty <- } out) : {TrustedThirdParty <- *}
+		throws IllegalArgumentException
+		where authority (TrustedThirdParty)
+	{
+		if (out == null)
+			throw new IllegalArgumentException("Erorr: null output stream");
+
+		out.println("Running by " + PrincipalUtil.toString(TrustedThirdParty));
+
+		out.println("Now creating a bunch of principals");
+		String princialNames[] = {"Alice", "Bob", "Chuck", "Dolores", "Ethel", "Root"};
+		String usernames[] = {"alice", "bob", "chuck", "dolores", "ethel", "bob"};
+		String passwords[] = {"junru", "xinyun", "chu", "jian", "zhihao", "xinyun"};
+		User users[] = new User[6];
+		for (int i = 0; i < 6; ++i) {
+			try {
+				final Principal newPrincipal = new UserPrincipal(princialNames[i], TrustedThirdParty);
+				out.println("Creating principal " + PrincipalUtil.toString(newPrincipal) + ", username = " + usernames[i] + ", password = " + passwords[i]);
+				out.println("\tDoes ttp act for " + princialNames[i] + "?\n\t" + PrincipalUtil.acts_for(TrustedThirdParty, newPrincipal));
+				users[i] = new User(newPrincipal, usernames[i], passwords[i]);
+			}
+			catch (ArrayIndexOutOfBoundsException ignored) {
+			}
+		}
+		out.println("6 principals created, and the last one is root.\n");
+
+		final int rootId = 5;
+		for (int i = 0; i < 5; ++i) {
+			try {
+				String username = users[i].getUsername();
+				String password = users[i].getPassword();
+				String rootUsername = users[rootId].getUsername();
+				String rootPassword = users[rootId].getPassword();
+
+				if (username.equals(rootUsername) && username.equals(rootPassword)) {
+					out.println(PrincipalUtil.toString(users[i].p) + " tries to login, success!");
+				}
+				else {
+					out.println(PrincipalUtil.toString(users[i].p) + " tries to login, incorrect username or password.");
+				}
+			}
+			catch (ArrayIndexOutOfBoundsException e) {
+			}
+			catch (NullPointerException e) {
+			}
+		}
+	}
+}
+

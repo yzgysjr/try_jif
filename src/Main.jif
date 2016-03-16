@@ -1,0 +1,28 @@
+
+import java.io.PrintStream;
+import jif.runtime.Runtime;
+
+public class Main authority(TrustedThirdParty) {
+	public static final void main {* <- *}(principal{} p, String args[]) : {}
+		throws SecurityException, IllegalArgumentException
+		where authority (TrustedThirdParty), caller (p)
+	{
+
+		PrintStream[{}] outA = null;
+		try {
+			Runtime[p] runtime = Runtime[p].getRuntime();
+			outA = runtime == null ? null : runtime.stdout(new label {});
+		}
+		catch (SecurityException e) {
+		}
+
+		PrintStream[{}] outB = endorse(outA, {p -> *} to {p -> *; p <- * meet TrustedThirdParty <- *});
+		PrintStream[{}] out = declassify(outB, {TrustedThirdParty <- *});
+
+		if (out == null)
+			throw new IllegalArgumentException("Erorr: null output stream");
+
+		new RunExample[TrustedThirdParty]().run(out);
+	}
+}
+
