@@ -13,17 +13,22 @@ class RunExample[principal TrustedThirdParty] authority (TrustedThirdParty) {
 
 		out.println("Running by " + PrincipalUtil.toString(TrustedThirdParty));
 
+		out.println("Does ttp act for UserGroup?\n\t" + PrincipalUtil.acts_for(TrustedThirdParty, UserGroup));
+
 		out.println("Now creating a bunch of principals");
 		String princialNames[] = {"Alice", "Bob", "Chuck", "Dolores", "Ethel", "Root"};
 		String usernames[] = {"alice", "bob", "chuck", "dolores", "ethel", "bob"};
 		String passwords[] = {"junru", "xinyun", "chu", "jian", "zhihao", "xinyun"};
-		User users[] = new User[6];
+
+		final UserPrincipal newPrincipals[] = new UserPrincipal[6];
 		for (int i = 0; i < 6; ++i) {
 			try {
-				final Principal newPrincipal = new UserPrincipal(princialNames[i], UserGroup);
+				final UserPrincipal newPrincipal = new UserPrincipal(princialNames[i], UserGroup, usernames[i], passwords[i]);
+				newPrincipals[i] = newPrincipal;
+
 				out.println("Creating principal " + PrincipalUtil.toString(newPrincipal) + ", username = " + usernames[i] + ", password = " + passwords[i]);
 				out.println("\tDoes ttp act for " + princialNames[i] + "?\n\t" + PrincipalUtil.acts_for(TrustedThirdParty, newPrincipal));
-				users[i] = new User(newPrincipal, usernames[i], passwords[i]);
+
 			}
 			catch (ArrayIndexOutOfBoundsException ignored) {
 			}
@@ -32,21 +37,28 @@ class RunExample[principal TrustedThirdParty] authority (TrustedThirdParty) {
 
 		final int rootId = 5;
 		for (int i = 0; i < 5; ++i) {
+			String{TrustedThirdParty <- ; TrustedThirdParty -> } result = "";
 			try {
-				String username = users[i].getUsername();
-				String password = users[i].getPassword();
-				String rootUsername = users[rootId].getUsername();
-				String rootPassword = users[rootId].getPassword();
+				final UserPrincipal user = newPrincipals[i];
+				final UserPrincipal root = newPrincipals[rootId];
+				if (TrustedThirdParty actsfor user && TrustedThirdParty actsfor root) {
 
-				String result;
-				if (username.equals(rootUsername) && password.equals(rootPassword)) {
-					result = PrincipalUtil.toString(users[i].p) + " tries to login, success!";
+					String username = user.getUsername();
+					String password = user.getPassword((principal)TrustedThirdParty);
+					String rootUsername = root.getUsername();
+					String rootPassword = root.getPassword(TrustedThirdParty);
+
+					if (username.equals(rootUsername) && password.equals(rootPassword)) {
+						result = PrincipalUtil.toString(user) + " tries to login, success!";
+					}
+					else {
+						result = PrincipalUtil.toString(user) + " tries to login, incorrect username or password.";
+					}
+
+					declassify ({}) {
+						out.println(declassify(result, {}));
+					}
 				}
-				else {
-					result = PrincipalUtil.toString(users[i].p) + " tries to login, incorrect username or password.";
-				}
-				
-				out.println(result);
 			}
 			catch (ArrayIndexOutOfBoundsException e) {
 			}

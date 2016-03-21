@@ -37,33 +37,35 @@ It illustrates Jif's ability to handle a bunch of dynamic principals.
  The expected output should be
  
     ```
-    Running by TrustedThirdParty
-    Now creating a bunch of principals
-    Creating principal Alice, username = alice, password = junru
-    	Does ttp act for Alice?
-    	true
-    Creating principal Bob, username = bob, password = xinyun
-    	Does ttp act for Bob?
-    	true
-    Creating principal Chuck, username = chuck, password = chu
-    	Does ttp act for Chuck?
-    	true
-    Creating principal Dolores, username = dolores, password = jian
-    	Does ttp act for Dolores?
-    	true
-    Creating principal Ethel, username = ethel, password = zhihao
-    	Does ttp act for Ethel?
-    	true
-    Creating principal Root, username = bob, password = xinyun
-    	Does ttp act for Root?
-    	true
-    6 principals created, and the last one is root.
-    
-    Alice tries to login, incorrect username or password.
-    Bob tries to login, success!
-    Chuck tries to login, incorrect username or password.
-    Dolores tries to login, incorrect username or password.
-    Ethel tries to login, incorrect username or password.
+	Running by TrustedThirdParty
+	Does ttp act for UserGroup?
+		true
+	Now creating a bunch of principals
+	Creating principal Alice, username = alice, password = junru
+		Does ttp act for Alice?
+		true
+	Creating principal Bob, username = bob, password = xinyun
+		Does ttp act for Bob?
+		true
+	Creating principal Chuck, username = chuck, password = chu
+		Does ttp act for Chuck?
+		true
+	Creating principal Dolores, username = dolores, password = jian
+		Does ttp act for Dolores?
+		true
+	Creating principal Ethel, username = ethel, password = zhihao
+		Does ttp act for Ethel?
+		true
+	Creating principal Root, username = bob, password = xinyun
+		Does ttp act for Root?
+		true
+	6 principals created, and the last one is root.
+
+	Alice tries to login, incorrect username or password.
+	Bob tries to login, success!
+	Chuck tries to login, incorrect username or password.
+	Dolores tries to login, incorrect username or password.
+	Ethel tries to login, incorrect username or password.
     ```
 ## References
 

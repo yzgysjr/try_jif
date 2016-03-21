@@ -1,11 +1,24 @@
 
 public class UserPrincipal extends AbstractPrincipal {
-	public UserPrincipal(String{this} name) {
-		super(name);
+
+	private final String{} username;
+	private final String{this -> } password;
+
+	public UserPrincipal(String{this} name, Principal{this} superior, String{this} username, String{this} password) {
+		this.username = username;
+		this.password = password;
+		super(name, superior);
 	}
 
-	public UserPrincipal(String{this} name, Principal{this} superior) {
-		super(name, superior);
+	public String{} getUsername() {
+		return username;
+	}
+
+	public String{ttp -> } getPassword{ttp -> } (Principal ttp) where
+		authority(this),
+		ttp actsfor this
+	{
+		return password;
 	}
 }
 
