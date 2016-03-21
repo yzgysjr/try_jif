@@ -20,7 +20,7 @@ class RunExample[principal TrustedThirdParty] authority (TrustedThirdParty) {
 		User users[] = new User[6];
 		for (int i = 0; i < 6; ++i) {
 			try {
-				final Principal newPrincipal = new UserPrincipal(princialNames[i], TrustedThirdParty);
+				final Principal newPrincipal = new UserPrincipal(princialNames[i], UserGroup);
 				out.println("Creating principal " + PrincipalUtil.toString(newPrincipal) + ", username = " + usernames[i] + ", password = " + passwords[i]);
 				out.println("\tDoes ttp act for " + princialNames[i] + "?\n\t" + PrincipalUtil.acts_for(TrustedThirdParty, newPrincipal));
 				users[i] = new User(newPrincipal, usernames[i], passwords[i]);
@@ -38,13 +38,16 @@ class RunExample[principal TrustedThirdParty] authority (TrustedThirdParty) {
 				String rootUsername = users[rootId].getUsername();
 				String rootPassword = users[rootId].getPassword();
 
-				if (username.equals(rootUsername) && username.equals(rootPassword)) {
-					out.println(PrincipalUtil.toString(users[i].p) + " tries to login, success!");
+				String result;
+				if (username.equals(rootUsername) && password.equals(rootPassword)) {
+					result = PrincipalUtil.toString(users[i].p) + " tries to login, success!";
 				}
 				else {
-					out.println(PrincipalUtil.toString(users[i].p) + " tries to login, incorrect username or password.");
+					result = PrincipalUtil.toString(users[i].p) + " tries to login, incorrect username or password.";
 				}
-			}
+				
+				out.println(result);
+            }
 			catch (ArrayIndexOutOfBoundsException e) {
 			}
 			catch (NullPointerException e) {
