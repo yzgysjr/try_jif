@@ -47,7 +47,7 @@ class RunExample[principal TrustedThirdParty] authority (TrustedThirdParty) {
 				}
 				
 				out.println(result);
-            }
+			}
 			catch (ArrayIndexOutOfBoundsException e) {
 			}
 			catch (NullPointerException e) {
