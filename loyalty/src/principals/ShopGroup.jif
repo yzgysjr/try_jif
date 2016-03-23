@@ -1,0 +1,19 @@
+package jif.principals;
+
+public class ShopGroup extends AbstractPrincipal {
+
+	public ShopGroup{this -> ; this <- }() where authority (this) {
+		super("ShopGroup");
+		addDelegatesTo(TrustedThirdParty);
+	}
+
+	private static ShopGroup{* <- *} P;
+
+	public static Principal getInstance{* <- *}() {
+		if (P == null) {
+			P = new ShopGroup();
+		}
+		return P;
+	}
+}
+

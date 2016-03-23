@@ -1,0 +1,19 @@
+
+public class Transaction {
+	final public Principal{} user;
+	final public Principal{} shop;
+
+	public String{user -> meet shop -> ; user <- meet shop <- } name;
+	public int   {user -> meet shop -> ; user <- meet shop <- } price;
+
+	public Transaction(Principal{this} user, Principal{this} shop,
+		String{user -> meet shop -> ; user <- meet shop <- } name,
+		int   {user -> meet shop -> ; user <- meet shop <- } price)
+	{
+		this.user = user;
+		this.shop = shop;
+		this.name = name;
+		this.price = price;
+	}
+}
+

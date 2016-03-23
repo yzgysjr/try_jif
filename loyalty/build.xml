@@ -1,0 +1,87 @@
+<project name = "loyalty" default="build" basedir=".">
+
+	<property environment="env"/>
+	<property name="jifc" location="${env.JIF}/bin/jifc"/>
+
+	<macrodef name="jifc">
+		<attribute
+			name="destdir"
+			description="The output directory."/>
+		<element name="extra-args" implicit="true"/>
+		<sequential>
+			<apply
+				executable="bash"
+				parallel="true"
+				failonerror="true"
+				dest="@{destdir}"
+				relative="false"
+				skipemptyfilesets="true"
+				vmlauncher="false">
+				<arg value="${jifc}"/>
+				<arg value="-d"/>
+				<arg value="@{destdir}"/>
+				<extra-args/>
+				<srcfile/>
+				<globmapper from="*.jif" to="*.class"/>
+			</apply>
+		</sequential>
+	</macrodef>
+
+	<target name="clean">
+		<delete dir="build"/>
+	</target>
+
+	<target
+		name="build"
+		description="Build the loyalty example"
+		depends="ttp,usergroup,shopgroup">
+		<jifc destdir="build/">
+			<arg value="-sourcepath" />
+			<arg value="src/loyalty/" />
+			<arg value="-cp" />
+			<arg value="build/:." />
+			<arg value="-e"/>
+			<arg value="-report"/>
+			<arg value="debug=1"/>
+			<fileset dir="src/loyalty/" includes="*.jif" />
+		</jifc>
+	</target>
+
+	<target
+		name="ttp"
+		description="Build the principal of trusted third party">
+		<jifc destdir="build/">
+			<arg value="-sourcepath" />
+			<arg value="src/principals/" />
+			<fileset dir="src/principals/" includes="TrustedThirdParty.jif" />
+		</jifc>
+	</target>
+
+	<target
+		name="usergroup"
+		description="Build the principal of the user group"
+		depends="ttp">
+		<jifc destdir="build/">
+			<arg value="-cp" />
+			<arg value="build/:." />
+			<arg value="-sourcepath" />
+			<arg value="src/principals/" />
+			<fileset dir="src/principals/" includes="UserGroup.jif" />
+		</jifc>
+	</target>
+
+	<target
+		name="shopgroup"
+		description="Build the principal of the shop group"
+		depends="ttp">
+		<jifc destdir="build/">
+			<arg value="-cp" />
+			<arg value="build/:." />
+			<arg value="-sourcepath" />
+			<arg value="src/principals/" />
+			<fileset dir="src/principals/" includes="ShopGroup.jif" />
+		</jifc>
+	</target>
+
+</project>
+

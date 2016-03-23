@@ -1,0 +1,9 @@
+
+public class Coupon {
+	public LogEntry[{TrustedThirdParty -> ; TrustedThirdParty <- }]{TrustedThirdParty <- ; TrustedThirdParty -> } logEntry;
+
+	public Coupon(LogEntry[{TrustedThirdParty -> ; TrustedThirdParty <- }]{TrustedThirdParty <- ; TrustedThirdParty -> } logEntry) {
+		this.logEntry = logEntry;
+	}
+}
+

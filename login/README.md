@@ -26,7 +26,7 @@ It illustrates Jif's ability to handle a bunch of dynamic principals.
  4. Compile the example
 
     ```{bash}
-    $ cd try_jif
+    $ cd try_jif/login
     $ ant
     ```
  5. Run the example using the scripts in `bin/`
