@@ -1,8 +1,8 @@
 
 public class UserPrincipal extends AbstractPrincipal {
 
-	private final String{} username;
-	private final String{this -> } password;
+	private final String{this <- } username;
+	private final String{this <- ; this -> } password;
 
 	public UserPrincipal(String{this} name, Principal{this} superior, String{this} username, String{this} password) {
 		this.username = username;
@@ -10,15 +10,20 @@ public class UserPrincipal extends AbstractPrincipal {
 		super(name, superior);
 	}
 
-	public String{} getUsername() {
-		return username;
+	public String{t3p <- } getUsername{t3p <- }(Principal t3p)
+		where caller(t3p), t3p actsfor this
+	{
+		String usernameA = endorse(username, {this <- } to {t3p <- });
+		return usernameA;
 	}
 
-	public String{ttp -> } getPassword{ttp -> } (Principal ttp) where
-		authority(this),
-		ttp actsfor this
+	public String{t3p <- ; t3p -> } getPassword{t3p <- }(Principal t3p)
+		where caller(t3p), t3p actsfor this
 	{
-		return password;
+		String passwordA = declassify(password, {this <- ; this -> } to {this <- ; t3p -> });
+		String passwordB = endorse(passwordA, {this <- ; t3p -> } to {t3p -> ; t3p <- });
+		return passwordB;
 	}
+
 }
 

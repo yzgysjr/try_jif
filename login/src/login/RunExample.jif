@@ -1,68 +1,53 @@
 
 import java.io.PrintStream;
-import jif.util.ArrayList;
 
-class RunExample[principal TrustedThirdParty] authority (TrustedThirdParty) {
+public class RunExample[principal t3p] authority (t3p) {
 
-	public void run{TrustedThirdParty <- *}(PrintStream[{}]{TrustedThirdParty <- } out) : {TrustedThirdParty <- *}
+	final UserPrincipal{t3p <- } root;
+	final UserPrincipal{t3p <- }[]{t3p <- } users;
+
+	public RunExample() {
+		root = new UserPrincipal("Root", UserGroup, "username:b", "password:b");
+
+		users = new UserPrincipal[]{
+			new UserPrincipal("a", UserGroup, "username:a", "password:a"),
+			new UserPrincipal("b", UserGroup, "username:b", "password:b"),
+			new UserPrincipal("c", UserGroup, "username:c", "password:c"),
+			new UserPrincipal("d", UserGroup, "username:d", "password:d"),
+			new UserPrincipal("e", UserGroup, "username:e", "password:e")
+		};
+	}
+
+	public void run{t3p <- } (PrintStream[{}]{t3p <- } out) : {t3p <- }
 		throws IllegalArgumentException
-		where authority (TrustedThirdParty)
+		where authority (t3p)
 	{
-		if (out == null)
-			throw new IllegalArgumentException("Erorr: null output stream");
 
-		out.println("Running by " + PrincipalUtil.toString(TrustedThirdParty));
+		final UserPrincipal{t3p <- }[]{t3p <- } users = this.users;
+		final UserPrincipal root = this.root;
 
-		out.println("Does ttp act for UserGroup?\n\t" + PrincipalUtil.acts_for(TrustedThirdParty, UserGroup));
+		if (users == null || root == null || out == null)
+			return;
 
-		out.println("Now creating a bunch of principals");
-		String princialNames[] = {"Alice", "Bob", "Chuck", "Dolores", "Ethel", "Root"};
-		String usernames[] = {"alice", "bob", "chuck", "dolores", "ethel", "bob"};
-		String passwords[] = {"junru", "xinyun", "chu", "jian", "zhihao", "xinyun"};
+		for (int i = 0; i < users.length; ++i) {
+			final UserPrincipal user = users[i];
+			if (user == null)
+				continue;
+			if (t3p actsfor user && t3p actsfor root) {
+				String username = user.getUsername(t3p);
+				String password = user.getPassword(t3p);
+				String rootUsername = root.getUsername(t3p);
+				String rootPassword = root.getPassword(t3p);
+				String result = "";
 
-		final UserPrincipal newPrincipals[] = new UserPrincipal[6];
-		for (int i = 0; i < 6; ++i) {
-			try {
-				final UserPrincipal newPrincipal = new UserPrincipal(princialNames[i], UserGroup, usernames[i], passwords[i]);
-				newPrincipals[i] = newPrincipal;
-
-				out.println("Creating principal " + PrincipalUtil.toString(newPrincipal) + ", username = " + usernames[i] + ", password = " + passwords[i]);
-				out.println("\tDoes ttp act for " + princialNames[i] + "?\n\t" + PrincipalUtil.acts_for(TrustedThirdParty, newPrincipal));
-
-			}
-			catch (ArrayIndexOutOfBoundsException ignored) {
-			}
-		}
-		out.println("6 principals created, and the last one is root.\n");
-
-		final int rootId = 5;
-		for (int i = 0; i < 5; ++i) {
-			String{TrustedThirdParty <- ; TrustedThirdParty -> } result = "";
-			try {
-				final UserPrincipal user = newPrincipals[i];
-				final UserPrincipal root = newPrincipals[rootId];
-				if (TrustedThirdParty actsfor user && TrustedThirdParty actsfor root) {
-
-					String username = user.getUsername();
-					String password = user.getPassword((principal)TrustedThirdParty);
-					String rootUsername = root.getUsername();
-					String rootPassword = root.getPassword(TrustedThirdParty);
-
-					if (username.equals(rootUsername) && password.equals(rootPassword)) {
-						result = PrincipalUtil.toString(user) + " tries to login, success!";
-					}
-					else {
-						result = PrincipalUtil.toString(user) + " tries to login, incorrect username or password.";
-					}
-
-					declassify ({}) {
-						out.println(declassify(result, {}));
-					}
+				if (username != null && password != null && username.equals(rootUsername) && password.equals(rootPassword)) {
+					result = PrincipalUtil.toString(user) + " tries to login, success!";
 				}
-			}
-			catch (ArrayIndexOutOfBoundsException e) {
-			}
-			catch (NullPointerException e) {
+				else {
+					result = PrincipalUtil.toString(user) + " tries to login, incorrect username or password.";
+				}
+
+				out.println(declassify(result, {t3p -> ; t3p <- } to {t3p <- }));
 			}
 		}
 	}
