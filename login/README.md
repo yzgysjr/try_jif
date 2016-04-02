@@ -43,6 +43,7 @@ It illustrates Jif's ability to handle a bunch of dynamic principals.
     d tries to login, incorrect username or password.
     e tries to login, incorrect username or password.
     ```
+
 ## References
 
    Please refer to this [website](http://www.cs.cornell.edu/jif/) for all related works.
