@@ -2,18 +2,19 @@
 import java.io.PrintStream;
 import jif.util.ArrayList;
 
-class RunExample[principal TrustedThirdParty] authority (TrustedThirdParty) {
+public class RunExample[principal t3p] authority (t3p) {
 
-	public void run{TrustedThirdParty <- *}(PrintStream[{}]{TrustedThirdParty <- } out) : {TrustedThirdParty <- *}
+	public void run{t3p <- } (PrintStream[{}]{t3p <- } out) : {t3p <- }
 		throws IllegalArgumentException
-		where authority (TrustedThirdParty)
+		where authority (t3p)
 	{
+
 		if (out == null)
 			throw new IllegalArgumentException("Erorr: null output stream");
 
-		out.println("Running by " + PrincipalUtil.toString(TrustedThirdParty));
+		out.println("Running by " + PrincipalUtil.toString(t3p));
 
-		out.println("Does ttp act for UserGroup?\n\t" + PrincipalUtil.acts_for(TrustedThirdParty, UserGroup));
+		out.println("Does t3p act for UserGroup?\n\t" + PrincipalUtil.acts_for(t3p, UserGroup));
 
 		out.println("Now creating a bunch of principals");
 		String princialNames[] = {"Alice", "Bob", "Chuck", "Dolores", "Ethel", "Root"};
@@ -27,7 +28,7 @@ class RunExample[principal TrustedThirdParty] authority (TrustedThirdParty) {
 				newPrincipals[i] = newPrincipal;
 
 				out.println("Creating principal " + PrincipalUtil.toString(newPrincipal) + ", username = " + usernames[i] + ", password = " + passwords[i]);
-				out.println("\tDoes ttp act for " + princialNames[i] + "?\n\t" + PrincipalUtil.acts_for(TrustedThirdParty, newPrincipal));
+				out.println("\tDoes t3p act for " + princialNames[i] + "?\n\t" + PrincipalUtil.acts_for(t3p, newPrincipal));
 
 			}
 			catch (ArrayIndexOutOfBoundsException ignored) {
@@ -37,32 +38,31 @@ class RunExample[principal TrustedThirdParty] authority (TrustedThirdParty) {
 
 		final int rootId = 5;
 		for (int i = 0; i < 5; ++i) {
-			String{TrustedThirdParty <- ; TrustedThirdParty -> } result = "";
 			try {
 				final UserPrincipal user = newPrincipals[i];
 				final UserPrincipal root = newPrincipals[rootId];
-				if (TrustedThirdParty actsfor user && TrustedThirdParty actsfor root) {
-
-					String username = user.getUsername();
-					String password = user.getPassword((principal)TrustedThirdParty);
-					String rootUsername = root.getUsername();
-					String rootPassword = root.getPassword(TrustedThirdParty);
-
-					if (username.equals(rootUsername) && password.equals(rootPassword)) {
-						result = PrincipalUtil.toString(user) + " tries to login, success!";
+				if (t3p actsfor user && t3p actsfor root) {
+					try {
+						String{t3p <- ; t3p -> } result = "";
+						String{t3p <- } username = user.getUsername(t3p);
+/*
+						String{t3p <- ; t3p -> } password = user.getPassword(t3p);
+						String{t3p <- } rootUsername = root.getUsername(t3p);
+						String{t3p <- ; t3p -> } rootPassword = root.getPassword(t3p);
+						if (username.equals(rootUsername) && password.equals(rootPassword)) {
+							result = PrincipalUtil.toString(user) + " tries to login, success!";
+						}
+						else {
+							result = PrincipalUtil.toString(user) + " tries to login, incorrect username or password.";
+						}
+//						out.println(declassify(result, {t3p <- }));
+*/
 					}
-					else {
-						result = PrincipalUtil.toString(user) + " tries to login, incorrect username or password.";
-					}
-
-					declassify ({}) {
-						out.println(declassify(result, {}));
+					catch (NullPointerException ignored) {
 					}
 				}
 			}
 			catch (ArrayIndexOutOfBoundsException e) {
-			}
-			catch (NullPointerException e) {
 			}
 		}
 	}

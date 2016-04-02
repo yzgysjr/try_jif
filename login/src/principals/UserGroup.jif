@@ -4,7 +4,7 @@ public class UserGroup extends AbstractPrincipal {
 
 	public UserGroup{this -> ; this <- }() where authority (this) {
 		super("UserGroup");
-		addDelegatesTo(TrustedThirdParty);
+		addDelegatesTo(t3p);
 	}
 
 	private static UserGroup{* <- *} P;

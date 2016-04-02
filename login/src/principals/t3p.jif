@@ -1,0 +1,18 @@
+package jif.principals;
+
+public class t3p extends AbstractPrincipal {
+
+	public t3p() {
+		super("t3p");
+	}
+
+	private static t3p{* <- *} P;
+
+	public static Principal getInstance{* <- *}() {
+		if (P == null) {
+			P = new t3p();
+		}
+		return P;
+	}
+}
+

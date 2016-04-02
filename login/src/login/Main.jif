@@ -2,10 +2,10 @@
 import java.io.PrintStream;
 import jif.runtime.Runtime;
 
-public class Main authority(TrustedThirdParty) {
+public class Main authority(t3p) {
 	public static final void main {* <- *}(principal{} p, String args[]) : {}
 		throws SecurityException, IllegalArgumentException
-		where authority (TrustedThirdParty), caller (p)
+		where authority (t3p), caller (p)
 	{
 
 		PrintStream[{}] outA = null;
@@ -16,13 +16,13 @@ public class Main authority(TrustedThirdParty) {
 		catch (SecurityException e) {
 		}
 
-		PrintStream[{}] outB = endorse(outA, {p -> *} to {p -> *; p <- * meet TrustedThirdParty <- *});
-		PrintStream[{}] out = declassify(outB, {TrustedThirdParty <- *});
+		PrintStream[{}] outB = endorse(outA, {p -> *} to {p -> *; p <- * meet t3p <- *});
+		PrintStream[{}] out = declassify(outB, {t3p <- *});
 
 		if (out == null)
 			throw new IllegalArgumentException("Erorr: null output stream");
 
-		new RunExample[TrustedThirdParty]().run(out);
+		new RunExample[t3p]().run(out);
 	}
 }
 
