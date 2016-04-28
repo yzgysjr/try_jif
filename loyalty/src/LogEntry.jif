@@ -1,0 +1,23 @@
+package loyalty;
+
+public class LogEntry[principal L] {
+
+	final User        { {L -> ; L <- } meet {U -> } } U;
+	final Shop        { {L -> ; L <- } meet {U -> } } S;           // do not have to be final
+	final Transaction { {L -> ; L <- } meet {U -> } } tx;          // do not have to be final
+	final Timestamp   { {L -> ; L <- } meet {U -> } } timestamp;   // do not have to be final
+
+	public LogEntry(
+		User          { {L -> ; L <- } meet {U -> } } U,
+		Shop          { {L -> ; L <- } meet {U -> } } S,
+		Transaction   { {L -> ; L <- } meet {U -> } } tx,
+		Timestamp     { {L -> ; L <- } meet {U -> } } timestamp)
+	{
+		this.U = U;
+		this.S = S;
+		this.tx = tx;
+		this.timestamp = timestamp;
+	}
+}
+
+

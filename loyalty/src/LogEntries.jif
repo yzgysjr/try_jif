@@ -1,0 +1,17 @@
+package loyalty;
+
+public class LogEntries[principal L] authority(L) {
+
+	void add        { {L -> ; L <- } meet {U -> } }
+	(	User        { {U -> ; U <- } meet {S -> ; S <- } } U   ,
+		Timestamp   { {U -> ; U <- } meet {S -> ; S <- } } t   ,
+		Transaction { {U -> ; U <- } meet {S -> ; S <- } } tx  ,
+		Shop        { {U -> ; U <- } meet {S -> ; S <- } } S   ) 
+	where authority(L), L actsfor S {
+		final User         _U = endorse(U,  { {L -> ; L <- } meet {U -> } } );
+		final Timestamp    _t = endorse(t,  { {L -> ; L <- } meet {U -> } } );
+		final Transaction _tx = endorse(tx, { {L -> ; L <- } meet {U -> } } );
+		final Shop         _S = endorse(S,  { {L -> ; L <- } meet {U -> } } );
+	}
+}
+

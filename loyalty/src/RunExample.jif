@@ -1,0 +1,15 @@
+package loyalty;
+
+// TODO use run time label to simplify the program
+
+public class RunExample {
+
+	final TTP {this} L;
+
+	public RunExample(TTP{this} L) {
+		this.L = L;
+	}
+	
+
+}
+

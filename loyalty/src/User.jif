@@ -1,0 +1,11 @@
+package loyalty;
+
+public class User extends AbstractPrincipal {
+
+	public User(String{this} name, Principal{this} superior) {
+		super(name, superior);
+	}
+
+	
+}
+

@@ -1,0 +1,45 @@
+package loyalty;
+
+public class Shop extends AbstractPrincipal {
+
+	public Shop(String{this} name, Principal{this} superior) {
+		super(name, superior);
+	}
+
+	Timestamp           { {U -> ; * <- } meet {S -> ; S <- } }
+		transaction_ok  { {U -> ; * <- } meet {S -> ; S <- } } (
+			User        { {U -> ; U <- } meet {S -> } } U,
+			Transaction { {U -> ; U <- } meet {S -> } } tx,
+			Shop        { {U -> ; U <- } meet {S -> } } S
+		)
+	where authority(this), S equiv this {
+		return new Timestamp();
+	}
+
+	void purchase       { {U -> ; * <- } meet {S -> ; S <- } } (
+			User        { {U -> ; U <- } meet {S -> } } U  ,
+			Transaction { {U -> ; U <- } meet {S -> } } tx ,
+			Shop        { {U -> ; U <- } meet {S -> } } S  )
+	where authority(this), S equiv this {
+		final Timestamp    time = transaction_ok(U, tx, S);
+		final Timestamp   _time = endorse(time, { {U -> ; U <- } meet {S -> ; S <- } } );
+		final User        _U    = endorse(U   , { {U -> ; U <- } meet {S -> ; S <- } } );
+		final Transaction _tx   = endorse(tx  , { {U -> ; U <- } meet {S -> ; S <- } } );
+		final Shop        _S    = endorse(S   , { {U -> ; U <- } meet {S -> ; S <- } } );
+
+		if (_time != null && _S equiv S && _U equiv U) {
+			// TODO: where could I put `history`
+		}
+	}
+
+	boolean             { {U -> } meet {S -> ; S <- } }
+		redeem_tx_ok    { _ <- _ ; S -> } (
+			User        { {U -> ; U <- } meet {S -> } } U  ,
+			Transaction { {U -> ; U <- } meet {S -> } } tx ,
+			Shop        { {U -> ; U <- } meet {S -> } } S  ,
+			Coupon      { {U -> ; U <- } meet {S -> } } C  )
+	where authority(this), S equiv this {
+		return true;
+	}
+}
+
