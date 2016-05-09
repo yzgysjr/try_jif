@@ -1,0 +1,15 @@
+package loyalty;
+
+import jif.principals.L;
+
+public class BlockChainEntry[principal U] {
+	LogEntry           {{L <- ; L ->} meet {U -> }} entry;
+	BlockChainEntry[U] {{L <- ; L ->} meet {U -> }} next;
+
+	public BlockChainEntry{L <- }(LogEntry{{L <- ; L ->} meet {U -> }} entry, BlockChainEntry[U]{{L <- ; L ->} meet {U -> }} next) {
+		this.entry = entry;
+		this.next = next;
+	}
+}
+
+

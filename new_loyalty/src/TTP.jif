@@ -1,0 +1,77 @@
+package loyalty;
+
+import jif.principals.L;
+
+public class TTP authority(L) {
+
+	public static LogEntry{{L -> ; L <- } meet {owner -> } } getLogEntry{L <- } (
+		User        { {U -> ; U <- } meet {S -> ; S <- } }  U,
+		Shop        { {U -> ; U <- } meet {S -> ; S <- } }  S,
+		Timestamp   { {U -> ; U <- } meet {S -> ; S <- } }  t,
+		Transaction { {U -> ; U <- } meet {S -> ; S <- } } tx,
+		principal owner)
+	where authority(L), L actsfor U, L actsfor S, L actsfor owner {
+		final User         _U = endorse(U,  { {L -> ; L <- } meet {U -> } } );
+		final Timestamp    _t = endorse(t,  { {L -> ; L <- } meet {U -> } } );
+		final Transaction _tx = endorse(tx, { {L -> ; L <- } meet {U -> } } );
+		final Shop         _S = endorse(S,  { {L -> ; L <- } meet {U -> } } );
+		return new LogEntry(_U, _S, _t, _tx);
+	}
+
+	public static BlockChainEntry[owner]{{L -> ; L <- } meet {owner -> } } getNewBlockChain{owner <- } (
+		User        { {U -> ; U <- } meet {S -> ; S <- } }  U,
+		Shop        { {U -> ; U <- } meet {S -> ; S <- } }  S,
+		Timestamp   { {U -> ; U <- } meet {S -> ; S <- } }  t,
+		Transaction { {U -> ; U <- } meet {S -> ; S <- } } tx,
+		principal   { {owner -> ; L <- } } owner,
+		BlockChainEntry[owner]{ {L <- ; L ->} meet {owner -> } } head
+		)
+	where authority(L), L actsfor U, L actsfor S, L actsfor owner, endorse({L <- }) {
+		final User         _U = endorse(U,  { {L -> ; L <- } meet {U -> } } );
+		final Timestamp    _t = endorse(t,  { {L -> ; L <- } meet {U -> } } );
+		final Transaction _tx = endorse(tx, { {L -> ; L <- } meet {U -> } } );
+		final Shop         _S = endorse(S,  { {L -> ; L <- } meet {U -> } } );
+		LogEntry{{L -> ; L <- } meet {owner -> }} e = new LogEntry(_U, _S, _t, _tx);
+		return new BlockChainEntry[owner](e, head);
+	}
+
+	public static int{{L -> ; L <- } meet {U -> }} countTotalMoney{L <- }(User{L <- ; L -> } U)
+		where L actsfor U, authority(L)
+	{
+		int{L -> ; L <- } result = 0;
+		if (U != null) {
+			LogEntries[U]{ {L -> ; L <- } meet {U -> } } history = U.history;
+			if (history != null) {
+				for (BlockChainEntry[U] iterator = history.head; iterator != null; iterator = iterator.next) {
+					try {
+						final LogEntry{L <- ; L ->} entry = iterator.entry;
+						final User {L -> ; L <- } logUser = entry.U;
+						if (U equiv logUser) {
+							result += entry.tx.money;
+						}
+					}
+					catch (NullPointerException e) {
+					}
+				}
+			}
+		}
+		return declassify(result, {{L -> ; L <- } meet {U -> }});
+	}
+
+	public static boolean{{U -> } meet {L -> ; L <- }} validateCoupon{U <- } (User {U <- ; U -> } U, Coupon{U <- ; U -> } C )
+		where authority(L), L actsfor U, endorse({L <- })
+	{
+		final User u = endorse(U, {L -> ; L <- });
+		final Coupon c = endorse(C, {L -> ; L <- });
+		boolean result = false;
+		try {
+			result = countTotalMoney(u) >= c.money;
+		}
+		catch (NullPointerException e) {
+		}
+		return declassify(result, {{U -> } meet {L -> ; L <- }});
+	}
+
+}
+
+

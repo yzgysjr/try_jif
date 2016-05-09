@@ -1,0 +1,7 @@
+package loyalty;
+
+public class Timestamp {
+	public Timestamp() {
+	}
+}
+

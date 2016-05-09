@@ -1,0 +1,17 @@
+package jif.principals;
+
+public class L extends AbstractPrincipal {
+	public L() {
+		super("L");
+	}
+
+	private static L{* <- *} P;
+
+	public static Principal getInstance{* <- *}() {
+		if (P == null) {
+			P = new L();
+		}
+		return P;
+	}
+}
+

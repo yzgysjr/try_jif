@@ -1,0 +1,10 @@
+package loyalty;
+
+import jif.principals.L;
+
+public class Coupon {
+	public int{L <- } money;
+	public Coupon() {
+	}
+}
+
