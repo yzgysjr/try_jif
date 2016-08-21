@@ -1,45 +1,67 @@
-package loyalty;
 
 public class Shop extends AbstractPrincipal {
 
-	public Shop(String{this} name, Principal{this} superior) {
-		super(name, superior);
+	final L{this -> ; this <- } L;
+
+	public Shop(String{this} name, L{this} L) {
+		this.L = L;
+		super(name, L);
 	}
 
-	Timestamp           { {U -> ; * <- } meet {S -> ; S <- } }
-		transaction_ok  { {U -> ; * <- } meet {S -> ; S <- } } (
-			User        { {U -> ; U <- } meet {S -> } } U,
-			Transaction { {U -> ; U <- } meet {S -> } } tx,
-			Shop        { {U -> ; U <- } meet {S -> } } S
-		)
-	where authority(this), S equiv this {
-		return new Timestamp();
+	public boolean{{U -> ; U <- } meet {this -> ; this <- }} redeem {U <- } (
+		User      {{U -> ; U <- } meet {this -> }} U  ,
+		Tran      {{U -> ; U <- } meet {this -> }} tx ,
+		Coupon    {{U -> ; U <- } meet {this -> }} C  )
+	where authority(this), caller(U), this.L actsfor U, this.L actsfor this, endorse( {{this -> ; this <- } meet {U <- ; U -> }} ) {
+		final L{{this -> ; this <- } meet {U -> ; U <- }} L = endorse(
+			declassify(
+				this.L,
+				{{this -> ; this <- } meet {U -> }}
+			),
+			{{this -> ; this <- } meet {U -> ; U <- }}
+		);
+		if (L == null)
+			return false;
+		if (declassify(L.validateCoupon(U, C), {U -> meet this ->}))
+			return true;
+		else
+			return false;
 	}
 
-	void purchase       { {U -> ; * <- } meet {S -> ; S <- } } (
-			User        { {U -> ; U <- } meet {S -> } } U  ,
-			Transaction { {U -> ; U <- } meet {S -> } } tx ,
-			Shop        { {U -> ; U <- } meet {S -> } } S  )
-	where authority(this), S equiv this {
-		final Timestamp    time = transaction_ok(U, tx, S);
-		final Timestamp   _time = endorse(time, { {U -> ; U <- } meet {S -> ; S <- } } );
-		final User        _U    = endorse(U   , { {U -> ; U <- } meet {S -> ; S <- } } );
-		final Transaction _tx   = endorse(tx  , { {U -> ; U <- } meet {S -> ; S <- } } );
-		final Shop        _S    = endorse(S   , { {U -> ; U <- } meet {S -> ; S <- } } );
-
-		if (_time != null && _S equiv S && _U equiv U) {
-			// TODO: where could I put `history`
-		}
+	public void purchase {U <- }
+		(User  { {U -> ; U <- } meet {this -> } } U,
+		 Tran  { {U -> ; U <- } meet {this -> } } tx)
+	where authority(this), caller(U), this.L actsfor U, this.L actsfor this, endorse({this -> ; this <- } meet {U <- }) {
+		Time {{U ->} meet {this -> }} t = transaction_ok(U, tx);
+		final Time _t = endorse(t , {{U -> ; U <- } meet {this -> ; this <- }} );
+		final User  _U  = endorse(U , { {U -> ; U <- } meet {this -> ; this <- } } );
+		final Tran  _tx = endorse(tx, { {U -> ; U <- } meet {this -> ; this <- } } );
+		final L{{this -> ; this <- } meet {U -> ; U <- }} L = endorse(
+			declassify(
+				this.L,
+				{{this -> ; this <- } meet {U -> }}
+			),
+			{{this -> ; this <- } meet {U -> ; U <- }}
+		);
+		if (L == null)
+			return;
+		L.add(_t, _U, this, _tx);
 	}
 
-	boolean             { {U -> } meet {S -> ; S <- } }
-		redeem_tx_ok    { _ <- _ ; S -> } (
-			User        { {U -> ; U <- } meet {S -> } } U  ,
-			Transaction { {U -> ; U <- } meet {S -> } } tx ,
-			Shop        { {U -> ; U <- } meet {S -> } } S  ,
-			Coupon      { {U -> ; U <- } meet {S -> } } C  )
-	where authority(this), S equiv this {
+	public boolean{{U -> } meet {this -> ; this <- }} redeem_tx_ok { this -> ; this <- }
+		(User     {{U -> ; U <- } meet {this -> }} U ,
+		 Tran     {{U -> ; U <- } meet {this -> }} tx,
+		 Coupon   {{U -> ; U <- } meet {this -> }} C)
+	where authority(this) {
 		return true;
 	}
+
+	public Time{{U -> } meet {this -> ; this <- }} transaction_ok{{U -> } meet {this -> ; this <- }}
+		(User{{U -> ; U <- } meet {this -> }} U,
+         Tran{{U -> ; U <- } meet {this -> }} tx)
+	{
+		return new Time();
+	}
+
 }
 

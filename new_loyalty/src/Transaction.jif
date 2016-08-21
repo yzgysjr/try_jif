@@ -1,8 +1,0 @@
-package loyalty;
-
-public class Transaction {
-	public int money;
-	public Transaction() {
-	}
-}
-

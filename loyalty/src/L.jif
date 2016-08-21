@@ -1,0 +1,105 @@
+
+import jif.util.HashMap;
+import jif.util.LinkedList;
+
+public class L extends AbstractPrincipal {
+
+	public L{this}() {
+		this.map = new HashMap();
+		super("L");
+	}
+
+	private static L{* <- *} P;
+
+	public static Principal getInstance{* <- *}() {
+		if (P == null) {
+			P = new L();
+		}
+		return P;
+	}
+
+	final HashMap[{this -> ; this <- }, {this -> ; this <- }]{this -> ; this <- } map;
+
+	public void add{{U -> ; U <- } meet {S -> ; S <- }} (Time{{U -> ; U <- } meet {S -> ; S <- }} t,
+                                                         User{{U -> ; U <- } meet {S -> ; S <- }} U,
+                                                         Shop{{U -> ; U <- } meet {S -> ; S <- }} S,
+                                                         Tran{{U -> ; U <- } meet {S -> ; S <- }} tx)
+		where authority(this), caller(U), this actsfor U, this actsfor S, endorse( {{this ->; this <- } meet {U ->}} )
+	{
+		// endorse to {L meet U-> }
+		final User{{this -> ; this <- } meet {U -> }} _U  = endorse(U , {{this -> ; this <- } meet {U -> }});
+		final Shop{{this -> ; this <- } meet {U -> }} _S  = endorse(S , {{this -> ; this <- } meet {U -> }});
+		final Tran{{this -> ; this <- } meet {U -> }} _tx = endorse(tx, {{this -> ; this <- } meet {U -> }});
+		final Time{{this -> ; this <- } meet {U -> }} _t  = endorse(t , {{this -> ; this <- } meet {U -> }});
+
+		// create a LogEntry
+		LogEntry[this]{this -> ; this <- } entry = new LogEntry[this](new label{{this -> ; this <- } meet {_U -> }}, _S, _tx, _t);
+
+		// get hash map
+		final HashMap map = this.map;
+		if (map == null)
+			return;
+
+		// get LinkedList for the user
+		final User{{this -> ; this <- }} u = _U;
+		final JifObjectWrapper[{this -> ; this <- }] wrappedU = new JifObjectWrapper(u);
+		if (!map.containsKey(wrappedU))
+			map.put(wrappedU, new LinkedList[{this -> ; this <- }]());
+		LinkedList[{this -> ; this <- }] list = null;
+		try {
+			list = (LinkedList) map.get(wrappedU);
+		}
+		catch (Exception e) {
+		}
+		if (list == null)
+			return;
+
+		// add the new LogEntry into LinkedList
+		list.add(new JifObjectWrapper{this -> ; this <- }(entry));
+	}
+
+	public boolean{{this -> ; this <- } meet {U -> }} validateCoupon{U <- ; U -> }(User {U <- ; U -> } U, Coupon{U <- ; U -> } C )
+		where authority(this), this actsfor U, endorse({{this <- ; this -> } meet {U -> }})
+	{
+		final label l = new label {{this -> ; this <- } meet {U -> }};
+
+		final User u = endorse(U, {this -> ; this <- });
+		final Coupon c = endorse(C, {this -> ; this <- });
+		final HashMap map = this.map;
+		if (declassify(map, {*l}) == null)
+			return false;
+
+		final JifObjectWrapper[{this -> ; this <- }] wrappedU = new JifObjectWrapper(u);
+		if (!map.containsKey(wrappedU))
+			map.put(wrappedU, new LinkedList[{this -> ; this <- }]());
+		LinkedList[{this -> ; this <- }]{this -> ; this <- } list = null;
+		try {
+			list = (LinkedList) map.get(wrappedU);
+		}
+		catch (Exception ignored) {
+		}
+		if (declassify(list, {*l}) == null)
+			return false;
+		int{this -> ; this <- } totalMoney = 0;
+		for (int i = 0; i < list.size(); ++i) {
+			LogEntry[this] _entry = null;
+			try {
+				_entry = (LogEntry[this]) list.get(i);
+			}
+			catch (Exception ignored) {
+			}
+			if (_entry == null)
+				continue;
+			final LogEntry[this]{this <- ; this -> } entry = _entry;
+			try {
+				totalMoney += entry.tx.money;
+			}
+			catch (Exception ignored) {
+			}
+		}
+		return declassify(totalMoney >= 10, {*l});
+	}
+
+	
+}
+

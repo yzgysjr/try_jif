@@ -1,23 +1,15 @@
-package loyalty;
 
 public class LogEntry[principal L] {
+	final label{{L -> ; L <- } meet {*l}} l;
+	final Shop {{L -> ; L <- } meet {*l}} S;
+	final Tran {{L -> ; L <- } meet {*l}} tx;
+	final Time {{L -> ; L <- } meet {*l}} t;
 
-	final User        { {L -> ; L <- } meet {U -> } } U;
-	final Shop        { {L -> ; L <- } meet {U -> } } S;           // do not have to be final
-	final Transaction { {L -> ; L <- } meet {U -> } } tx;          // do not have to be final
-	final Timestamp   { {L -> ; L <- } meet {U -> } } timestamp;   // do not have to be final
-
-	public LogEntry(
-		User          { {L -> ; L <- } meet {U -> } } U,
-		Shop          { {L -> ; L <- } meet {U -> } } S,
-		Transaction   { {L -> ; L <- } meet {U -> } } tx,
-		Timestamp     { {L -> ; L <- } meet {U -> } } timestamp)
-	{
-		this.U = U;
+	public LogEntry{this}(label{{L -> ; L <- } meet {*l}} l, Shop{{L -> ; L <- } meet {*l}} S, Tran{{L -> ; L <- } meet {*l}} tx, Time{{L -> ; L <- } meet {*l}} t) {
+		this.l = l;
 		this.S = S;
 		this.tx = tx;
-		this.timestamp = timestamp;
+		this.t = t;
 	}
 }
-
 

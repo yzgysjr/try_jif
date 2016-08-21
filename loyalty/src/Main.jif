@@ -1,0 +1,12 @@
+import java.io.PrintStream;
+import jif.runtime.Runtime;
+
+public class Main {
+
+	public static final void main(String args[]) {
+		final L  L = new L ();
+		final User U = new User("User B", L);
+		final Shop S = new Shop("Shop A", L);
+		new Loyalty[L, U, S]();
+	}
+}

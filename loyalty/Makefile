@@ -1,4 +1,5 @@
-all:
+all: clean
+#	jifc -e -report debug=3 -robust -classpath "build/" -d "build/" src/jif/principals/*.jif
 	jifc -e -report debug=3 -robust -classpath "build/" -d "build/" src/*.jif
 
 #all: Transaction Coupon Timestamp TrustedThirdParty User Shop

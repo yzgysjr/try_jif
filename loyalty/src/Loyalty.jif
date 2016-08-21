@@ -1,0 +1,21 @@
+
+public class Loyalty[principal _L, principal _U, principal _S] {
+
+	public Loyalty{this}() {
+		if (!(_L instanceof L && _U instanceof User && _S instanceof Shop))
+			return;
+		final L  L = (L ) _L;
+		final Shop S = (Shop) _S;
+		final User U = (User) _U;
+	}
+
+	public void run{this}() {
+		if (!(_L instanceof L && _U instanceof User && _S instanceof Shop))
+			return;
+		final L  L = (L ) _L;
+		final Shop S = (Shop) _S;
+		final User U = (User) _U;
+	}
+
+}
+

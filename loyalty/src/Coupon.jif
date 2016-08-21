@@ -1,7 +1,11 @@
-package loyalty;
 
 public class Coupon {
-	public Coupon() {
+	final label{*l} l;
+	final int{*l} money;
+
+	public Coupon{this}(label{*l} l, int{*l} money) {
+		this.l = l;
+		this.money = money;
 	}
 }
 
